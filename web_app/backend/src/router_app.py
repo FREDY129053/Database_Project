@@ -10,7 +10,7 @@ router = APIRouter(prefix='/game_info')
 
 
 @router.get('', response_model=List[Game])
-@alru_cache
+@alru_cache()
 async def get_all_games():
     games = list(db.game_info.find({}))
 
@@ -21,7 +21,7 @@ async def get_all_games():
 
 
 @router.get('/publishers', response_model=List[Publisher])
-@alru_cache
+@alru_cache()
 async def get_all_publishers():
     publishers = list(db.publisher_info.find({}))
 
@@ -34,6 +34,14 @@ async def get_all_publishers():
     return publishers
 
 
+@router.get('/genres')
+@alru_cache()
+async def get_all_genres():
+    genres = list(db.game_info.distinct("genres"))
+
+    return genres
+
+
 @router.get('/{game_slug}', response_model=Game)
 async def get_game_by_slug(game_slug: str):
     game = db.game_info.find_one({"slug": game_slug})
@@ -44,7 +52,6 @@ async def get_game_by_slug(game_slug: str):
     game["_id"] = str(game["_id"])
 
     return game
-
 
 
 @router.get('/publishers/{publisher_slug}', response_model=Publisher)

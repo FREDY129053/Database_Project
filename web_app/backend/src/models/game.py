@@ -3,7 +3,7 @@ from typing import List, Dict, Any, Union
 
 
 class Game(BaseModel):
-    id: str = Field(..., alias='_id')
+    # id: str = Field(..., alias='_id')
     name: str
     description: str
     platforms: List[str]
@@ -21,7 +21,6 @@ class Game(BaseModel):
         arbitrary_types_allowed = True
         json_schema_extra = {
             "example": {
-                "id": "6629025a9d64aa6141820085",
                 "name": "Grand Theft Auto V",
                 "description": "Rockstar Games went bigger, since their previous installment of the series.",
                 "platforms": [
