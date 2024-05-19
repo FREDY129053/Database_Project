@@ -6,7 +6,7 @@ class Publisher(BaseModel):
     # id: str = Field(..., alias='_id')
     name: str
     description: str
-    photo_url: str
+    photo_url: str | None = None
     site_url: str | None = None
     slug: str
 

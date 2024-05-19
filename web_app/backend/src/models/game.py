@@ -12,8 +12,8 @@ class Game(BaseModel):
     date: Dict[str, Any]
     publishers: List[str]
     age: Union[int, str]
-    playtime: int | None = None
-    preview_photo: str
+    playtime: str | None = None
+    preview_url: str | None = None
     photos: List[str]
     slug: str
 
