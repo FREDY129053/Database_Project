@@ -23,8 +23,6 @@ export default function Home () {
 	const [platforms, setPlatforms] = useState([])
 	const [sort, setSort] = useState()
 	
-
-
 	const getAllGames = (page = 1, filters_genre = [], filters_platform = [], sort = null) => {
 		let query = `http://127.0.0.1:8000/game_info/?page=${page}`
 
@@ -64,8 +62,7 @@ export default function Home () {
 						<Dropdown text='Platforms' filters={filters.platforms} value={platforms} onChange={o => setPlatforms(o)} multiple={true} />
 						<Dropdown text='Sort by' filters={['Rating', 'Date']} value={sort} onChange={o => setSort(o)} multiple={false} />
 					</div>
-					<ItemsList items={allGames.games} /> 
-					{/* TODO можно ли менять выбранный элемент на равный странице текущей */}
+					<ItemsList items={allGames.games} />
 					<ReactPaginate
 						breakLabel=''
 						pageCount={allGames.info.total_pages}

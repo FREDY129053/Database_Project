@@ -97,7 +97,7 @@
 	outline: none;
 }
 
-.option_badge:hover, .option_badge:focus {
+.option_badge:hover {
 	background-color: hsl(36, 100%, 60%);
 	border-color: hsl(36, 100%, 50%);
 }

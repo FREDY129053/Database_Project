@@ -4,8 +4,14 @@
 	-webkit-text-fill-color: #fff;
 }
 
+.photo-bg {
+	background-color: #e0e0e0;
+	border-radius: 20px;
+	padding: 5px 20px;
+}
+
 .photo {
-	max-height: 450px;
+	max-height: 500px;
 }
 
 .wrapper {

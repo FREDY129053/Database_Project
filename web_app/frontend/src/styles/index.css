@@ -378,11 +378,16 @@ body {
 .publisher-photo {
   width: 300px;
   /* height: auto; */
-  max-height: 600px;
+  max-height: 500px;
   object-fit: cover;
 }
 
 .publisher-name {
   margin-top: 10px;
   font-weight: bold;
+}
+
+.empty {
+	margin-left: 42%;
+	font-size: 3em;
 }

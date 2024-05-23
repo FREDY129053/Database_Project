@@ -40,7 +40,9 @@ export default function PublisherInfo() {
 						</div>
 
 						<div className="image-wrapper">
-							<img className='photo' src={publisher.photo_url ? publisher.photo_url : noPhoto} width={400}/>
+							<div className="photo-bg">
+								<img className='photo' src={publisher.photo_url ? publisher.photo_url : noPhoto} width={400}/>
+							</div>
 						</div>
 
 						</div>

@@ -16,7 +16,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from pathes import tags_and_pathes  # Пути для парсинга информации
-from cache_games_info import all_links, temp_all_links
 
 all_links_async = []  # Хранение всех ссылок на игры
 unique_publishers = set()  # Сохраняем имена всех УНИКАЛЬНЫХ издателей
@@ -147,7 +146,7 @@ def get_game_info(link):
     for i in preview_photo_match:
         preview_photo = i[0].replace('/1280/', '/600/')
 
-    # Получение половины фотографий
+    # Получение фотографий геймплея
     photos_arr = []
     photos_page = requests.get(link + '/screenshots')
     while photos_page.status_code != 200:
@@ -156,6 +155,7 @@ def get_game_info(link):
     photos = BeautifulSoup(photos_page.text, "html.parser")
     all_photos = photos.findAll('img',
                                 class_='responsive-image game-subpage__block-item game-subpage__screenshots-item')
+    # Меняем расширение картинок на большее
     for i in all_photos:
         photos_arr.append(i.get('src').replace('/200/', '/600/'))
 
@@ -215,14 +215,17 @@ def get_game_info(link):
 
 
 def insert_data_into_db(links):
+    """
+        Вставка данных игр в базу данных с учетом повторений
+        Args:
+            links: list - Массив ссылок на игры
+    """
     collection = get_db_collection('game_info')
     for i in links:
         game = get_game_info(i)
         if collection.find_one({'slug': game['slug']}) is None:
-            print(game)
             collection.insert_one(game)
         else:
-            print(f'Игра есть {game["name"]}')
             continue
 
 
@@ -260,57 +263,6 @@ def main():
     insert_data_into_db(all_links_async)
 
     get_publisher_info()
-
-    # insert_data_into_db(['https://rawg.io/games/adventure-capitalist', 'https://rawg.io/games/grand-theft-auto-v'])
-    # print(unique_publishers)
-
-    # try:
-    #     conn = MongoClient()
-    # except:
-    #     print('Cannot Connect')
-    #
-    # db = conn.game_info_box
-    # collection = db.game_info
-    # for document in collection.find():
-    #     publishers = document.get('publishers', [])
-    #     # print(publishers)
-    #     publisher_obj = [{"name": publisher, "slug": slugify(publisher)} for publisher in publishers]
-    #     print(publisher_obj)
-    #     collection.update_one(
-    #         {"_id": document["_id"]},
-    #         {"$set": {"publishers": publisher_obj}}
-    #     )
-
-    # for link in temp_all_links:
-    #     page_html = requests.get(link)
-    #
-    #     while page_html.status_code != 200:
-    #         page_html = requests.get(link)
-    #
-    #     soup = BeautifulSoup(page_html.text, "html.parser")
-    #     name = soup.select_one(tags_and_pathes["name"]).text if soup.select_one(tags_and_pathes["name"]) else None
-    #     photos_arr = []
-    #     photos_page = requests.get(link + '/screenshots')
-    #     while photos_page.status_code != 200:
-    #         photos_page = requests.get(link + '/screenshots')
-    #
-    #     photos = BeautifulSoup(photos_page.text, "html.parser")
-    #     all_photos = photos.findAll('img',
-    #                                 class_='responsive-image game-subpage__block-item game-subpage__screenshots-item')
-    #     for i in all_photos:
-    #         photos_arr.append(i.get('src').replace('/200/', '/600/'))
-    #
-    #     try:
-    #         conn = MongoClient()
-    #     except:
-    #         print('Cannot Connect')
-    #
-    #     print(name)
-    #     db = conn.game_info_box
-    #     collection = db.game_info
-    #     query_filter = {'slug': slugify(name)}
-    #     update_op = {'$set': {'photos': photos_arr} }
-    #     result = collection.update_one(query_filter, update_op)
 
 
 if __name__ == '__main__':

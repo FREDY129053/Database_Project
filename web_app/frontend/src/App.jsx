@@ -18,7 +18,6 @@ function App() {
 					<Route path='/game_info/:slug' element={<GameInfo />} />
 					<Route path='/game_info/publishers/:slug' element={<PublisherInfo />} />
 				</Routes>
-				{/* {allGames ? <ItemsList items={allGames} /> : <Spin size='large' />} */}
 			</div>
 			
     </>

@@ -1,16 +1,21 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect} from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios"
 import { Spin, Carousel } from 'antd';
 import slugify from 'react-slugify'
-import { Link } from "react-router-dom"
+import { Link} from "react-router-dom"
 import '../styles/single_game.css';
 import no_image from '../styles/images/no_image.webp';
 import React from "react";
+import {Img} from 'react-image';
+// import PrevArrow from '../styles/icons/arrow-prev.svg';
 
 export default function GameInfo() {
 	const { slug } = useParams()
 	const [game, setGame] = useState(null)
+
+	// Кнопка расскрытия текста
+	const [isExpanded, setIsExpanded] = useState(false)
 
 	const getGame = () => {
 		axios.get('http://127.0.0.1:8000/game_info/' + slug).then(resp => {
@@ -21,6 +26,11 @@ export default function GameInfo() {
 	useEffect(() => {
 		getGame()
 	}, [slug])
+
+	const toggleExpanded = () => {
+		setIsExpanded(!isExpanded)
+	}
+
 
 	return (
 		<>
@@ -33,7 +43,10 @@ export default function GameInfo() {
 									<h1 className="title">{game.name}</h1>
 									<p className="playtime">{game.playtime ? <span>Playtime: {game.playtime}</span> : ''}</p>
 								</div>
-								<p className="description">{game.description}</p>
+								<p id="desc" className={`description ${isExpanded ? 'expanded': 'collapsed'}`}>
+									{game.description}
+								</p>
+								{(<button onClick={toggleExpanded} className="toggle-btn">{isExpanded ? 'Less' : 'More'}</button>)}
 							</div>
 
 							<div className="image-wrapper">
@@ -113,7 +126,8 @@ export default function GameInfo() {
 									{game.photos.map((photo, i) => {
 										return (
 											<div key={i}>
-												<img src={photo} width={500} />
+												<Img src={photo} width={500} loader={<Spin className="flex items-center justify-center" size="large" />} />
+												{/* <img src={photo} width={500} /> */}
 											</div>
 										)
 									})}

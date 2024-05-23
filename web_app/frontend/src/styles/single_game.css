@@ -144,6 +144,31 @@ body {
 	-webkit-text-fill-color: #fff;
 }
 
+.description {
+	overflow: hidden;
+	transition: max-height .3s ease;
+}
+
+.collapsed {
+	max-height: calc(1.2em * 7);
+}
+
+.expanded {
+	max-height: none;
+}
+
+.toggle-btn {
+	background-color: #f90;
+	color: white;
+	border: none;
+	padding: 5px 10px;
+	cursor: pointer;
+	margin-top: 10px;
+	margin-left: 40%;
+	display: block;
+	width: 20%;
+}
+
 .carousel {
 	margin-bottom: 10em;
 	/* margin-left: 33%; */
@@ -154,4 +179,9 @@ body {
 .carousel div {
 	border-radius: 25px;
 	-webkit-text-fill-color: #fff;
+}
+
+.abs {
+	position: absolute;
+	padding: 10px;
 }

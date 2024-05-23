@@ -2,8 +2,6 @@ from fastapi import APIRouter, HTTPException, Query
 from typing import List
 
 from .db_client import db
-from .models.game import Game
-from .models.publisher import Publisher
 
 router = APIRouter(prefix='/game_info')
 
@@ -14,9 +12,10 @@ async def get_all_games(page: int = Query(1, gt=0),
                         genres: List[str] = Query(None),
                         platforms: List[str] = Query(None),
                         sort: str = Query(None)):
-    offset = (page - 1) * size
-    query = {}
-    sort_by = {}
+    offset = (page - 1) * size  # Получение нужных данных для страницы
+    query = {}  # Запрос
+    sort_by = {}  # Запрос на сортировку
+    # Если передаются параметры, то запоминаем
     if genres:
         query['genres'] = {'$all': genres}
     if platforms:
@@ -26,18 +25,17 @@ async def get_all_games(page: int = Query(1, gt=0),
             sort_by['date.year'] = -1
         elif sort.lower() == 'rating':
             sort_by['score'] = -1
-
+    # Формируем запрос
     games = db.game_info.find(query)
 
     if sort_by:
         games = games.sort(list(sort_by.items()))
 
     games = list(games.skip(offset).limit(size))
-    # games = list(db.game_info.find(query).skip(offset).limit(size))
 
     for game in games:
         game["_id"] = str(game["_id"])
-
+    # Дополнительная информация о страницах
     total_games = db.game_info.count_documents(query)
     total_pages = total_games // size + 1
 
@@ -53,7 +51,7 @@ async def get_all_games(page: int = Query(1, gt=0),
     return result
 
 
-@router.get('/publishers', response_model=List[Publisher])
+@router.get('/publishers')
 async def get_all_publishers():
     publishers = list(db.publisher_info.find({}))
 
@@ -88,7 +86,7 @@ async def get_game_by_slug(game_slug: str):
     return game
 
 
-@router.get('/publishers/{publisher_slug}', response_model=Publisher)
+@router.get('/publishers/{publisher_slug}')
 async def get_publisher_by_slug(publisher_slug: str):
     publisher = db.publisher_info.find_one({"slug": publisher_slug})
 

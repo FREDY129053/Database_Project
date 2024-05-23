@@ -3,6 +3,8 @@ import { Link, useMatch, useResolvedPath } from "react-router-dom"
 import axios from 'axios';
 import { useEffect, useState, useRef } from 'react';
 import { AiOutlineSearch } from "react-icons/ai";
+import {Img} from 'react-image';
+import Logo from '../styles/images/logo_wbg.png';
 
 export default function Navbar() {
 	const [search, setSearch] = useState('')
@@ -36,6 +38,8 @@ export default function Navbar() {
 		}
 	}
 
+	
+
 	useEffect(() => {
 		if (search) {
 			setIsOpen(true)
@@ -57,7 +61,9 @@ export default function Navbar() {
 
 	return (
 		<nav className="nav">
-			<Link to="/" className="site-title" onClick={() => setSearch('')}>Logo Here</Link>
+			<Link to="/" className="site-title" onClick={() => setSearch('')}>
+				<Img src={Logo} width={140}/>
+			</Link>
 
 			<div onBlur={handleClickOutside} ref={divRef}>
 				<div className="input_search">
@@ -76,8 +82,7 @@ export default function Navbar() {
 						? searchAnswer.map((item, i) => {
 							return (
 								<li key={i}>
-									<Link 
-										// target="_blank"
+									<Link
 										key={i} 
 										to={'/game_info/' + item.slug} 
 										onClick={() => setTimeout(() => {setIsOpen(false); setSearch('')}, 50)}

@@ -3,7 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .router_app import router
 
-app = FastAPI()
+app = FastAPI(
+    title="My App",
+    description="Description of my app.",
+    version="1.0",
+    docs_url='/docs',
+    openapi_url='/openapi.json', # This line solved my issue, in my case it was a lambda function
+    redoc_url=None
+)
 
 origins = [
     "http://localhost:5173",
