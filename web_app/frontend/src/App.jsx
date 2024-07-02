@@ -19,7 +19,6 @@ function App() {
 					<Route path='/game_info/publishers/:slug' element={<PublisherInfo />} />
 				</Routes>
 			</div>
-			
     </>
   )
 }

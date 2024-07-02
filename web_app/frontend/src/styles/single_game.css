@@ -170,6 +170,7 @@ body {
 }
 
 .carousel {
+	margin-top: 1.5em;
 	margin-bottom: 10em;
 	/* margin-left: 33%; */
 	width: 500px;
